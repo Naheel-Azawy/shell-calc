@@ -1,0 +1,15 @@
+* shell-calc
+  Little math tools for the shell.
+  - Functions as a wrapper over octave, bc, gcc, python, node-js, and sometimes awk.
+  - A matplotlib wrapper is included
+  - CSV file manipulation
+
+** Installation
+   #+begin_src shell-script
+     make install
+   #+end_src
+
+# TODO: usage, examples, anything
+
+** License
+   GPL3
