@@ -157,7 +157,7 @@ tanh=Math.tanh'
 }
 
 run_oct() {
-    command -v octave-cli >/dev/null || {
+    command -v octave >/dev/null || {
         echo 'Octave is not installed!' >&2
         return 1
     }
@@ -176,7 +176,7 @@ function units
     system('units');
 end
 "
-    octnow() { octave-cli -q --persist --eval "$OH"; }
+    octnow() { octave -q --persist --eval "$OH"; }
     [ $# = 0 ] && (octnow; exit)
     echo "$@" | octnow | sed 's/ans =\s*//g'
 }
