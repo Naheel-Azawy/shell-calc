@@ -162,7 +162,7 @@ run_oct() {
         return 1
     }
     OH="
-packages = {'communications', 'signal', 'control', 'symbolic'};
+packages = {'communications', 'signal', 'control', 'symbolic', 'statistics'};
 for i = 1:size(packages, 2)
     p = packages{i};
     try
