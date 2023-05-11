@@ -1,12 +1,12 @@
-PREFIX = /usr/bin/
+PREFIX = /usr/local
 
 install:
-	mkdir -p $(DESTDIR)$(PREFIX)
-	cp -f calc $(DESTDIR)$(PREFIX)
-	cp -f csv $(DESTDIR)$(PREFIX)
-	cp -f plot $(DESTDIR)$(PREFIX)
+	mkdir -p $(PREFIX)/bin/
+	cp -f calc $(PREFIX)/bin/
+	cp -f csv $(PREFIX)/bin/
+	cp -f plot $(PREFIX)/bin/
 
 uninstall:
-	rm -f $(DESTDIR)$(PREFIX)/calc
-	rm -f $(DESTDIR)$(PREFIX)/csv
-	rm -f $(DESTDIR)$(PREFIX)/plot
+	rm -f $(PREFIX)/bin/calc
+	rm -f $(PREFIX)/bin/csv
+	rm -f $(PREFIX)/bin/plot
