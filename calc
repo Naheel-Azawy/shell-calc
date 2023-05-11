@@ -170,11 +170,24 @@ for i = 1:size(packages, 2)
     catch e
     end
 end
+
 format long;
 PS1('>> ');
-function units
-    system('units');
+
+function units(varargin)
+    if (length(varargin) == 0)
+        system('units');
+    elseif (length(varargin) == 1)
+        system(['units ' varargin{1}]);
+    elseif (length(varargin) == 2)
+        system(['units "'"'"' varargin{1} '"'"'" ' varargin{2}]);
+    elseif (length(varargin) == 3)
+        system(['units "'"'"' varargin{1} ' ' varargin{2} '"'"'" ' varargin{3}]);
+    else
+        display('Invalid number or arguments');
+    end
 end
+
 function plot_dark()
     %% https://octave.discourse.group/t/enable-dark-mode-in-octave/938/6
     dark_props = {'defaultfigurecolor', [0 0 0], ...
@@ -188,6 +201,7 @@ function plot_dark()
 end
 plot_dark();
 "
+
     octnow() { octave -q --persist --eval "$OH"; }
     [ $# = 0 ] && (octnow; exit)
     echo "$@" | octnow | sed 's/ans =\s*//g'
