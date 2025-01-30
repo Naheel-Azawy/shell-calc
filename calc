@@ -162,17 +162,38 @@ run_oct() {
         return 1
     }
     OH="
-packages = {'communications', 'signal', 'control', 'symbolic', 'statistics'};
-for i = 1:size(packages, 2)
-    p = packages{i};
-    try
-        pkg('load', p);
-    catch e
+format long;
+PS1('>> ');
+
+global __packages = {'communications', 'signal', 'control', 'symbolic', 'statistics'};
+global __dark = 0;
+
+function pkgs_load()
+    global __packages;
+    for i = 1:size(__packages, 2)
+        p = __packages{i};
+        try
+            pkg('load', p);
+        catch e
+        end
     end
 end
 
-format long;
-PS1('>> ');
+function pkgs_install()
+    global __packages;
+    for i = 1:size(__packages, 2)
+        p = __packages{i};
+        try
+            pkg('load', p);
+            printf('Loaded %s\n', p);
+        catch e
+            printf('Installing %s...\n', p);
+            pkg('install', '-forge', p);
+            pkg('load', p);
+            printf('Loaded %s\n', p);
+        end
+    end
+end
 
 function units(varargin)
     if (length(varargin) == 0)
@@ -189,16 +210,50 @@ function units(varargin)
 end
 
 function plot_dark()
-    %% https://octave.discourse.group/t/enable-dark-mode-in-octave/938/6
-    dark_props = {'defaultfigurecolor', [0 0 0], ...
-                  'defaultfigureinverthardcopy', false, ...
-                  'defaultaxescolor', [0 0 0], ...
-                  'defaultaxesxcolor', [1 1 1], ...
-                  'defaultaxesycolor', [1 1 1], ...
-                  'defaultaxeszcolor', [1 1 1], ...
-                  'defaulttextcolor', [1 1 1]};
-    set (0, dark_props{:})
+    %% based on https://octave.discourse.group/t/enable-dark-mode-in-octave/938/6
+    dark_props = {'defaultfigurecolor',          [0 0 0], ...
+                  'defaultfigureinverthardcopy', false,   ...
+                  'defaultaxescolor',            [0 0 0], ...
+                  'defaultaxesxcolor',           [1 1 1], ...
+                  'defaultaxesycolor',           [1 1 1], ...
+                  'defaultaxeszcolor',           [1 1 1], ...
+                  'defaulttextcolor',            [1 1 1]};
+    set(0, dark_props{:});
+    global __dark;
+    __dark = 1;
 end
+
+function plot_light()
+    dark_props = {'defaultfigurecolor',          [1 1 1], ...
+                  'defaultfigureinverthardcopy', true,   ...
+                  'defaultaxescolor',            [1 1 1], ...
+                  'defaultaxesxcolor',           [0 0 0], ...
+                  'defaultaxesycolor',           [0 0 0], ...
+                  'defaultaxeszcolor',           [0 0 0], ...
+                  'defaulttextcolor',            [0 0 0]};
+    set(0, dark_props{:});
+    global __dark;
+    __dark = 0;
+end
+
+function h = legend(varargin)
+    h = builtin('legend', varargin{:});
+    global __dark;
+    if (__dark)
+        set(h, 'TextColor', [1 1 1]);
+        set(h, 'Color',     [0 0 0]);
+    end
+end
+
+function plot_sine()
+    t = 0:.1:2*pi;
+    x = sin(t);
+    plot(t, x);
+    grid on;
+    legend('Sine');
+end
+
+pkgs_load();
 plot_dark();
 "
 
